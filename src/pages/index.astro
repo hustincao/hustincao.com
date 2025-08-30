@@ -1,0 +1,29 @@
+---
+import MainLayout from "@/layouts/main.astro";
+import "../styles/global.css";
+import { getCollection, getEntry } from "astro:content";
+
+// Get all entries from a collection.
+// Requires the name of the collection as an argument.
+const blogs = await getCollection("blog");
+---
+
+<MainLayout
+  title="Devlog Site"
+  description="Follow my journey in web development, coding experiments, and side projects. Tips, tutorials, and devlogs for fellow builders and tinkerers."
+>
+  <div class="flex flex-col">
+    {
+      blogs.map((blog) => (
+        <a
+          class="border-2 p-2 rounded-lg text-foreground hover:underline"
+          href={`/blog/${blog.id}`}
+        >
+          <p class="text-lg font-semibold">{blog.data.title}</p>
+          <p>{blog.data.description}</p>
+          <p>{`${blog.data.publishDate?.getUTCMonth()}-${blog.data.publishDate?.getUTCDate()}-${blog.data.publishDate?.getUTCFullYear()}`}</p>
+        </a>
+      ))
+    }
+  </div>
+</MainLayout>
